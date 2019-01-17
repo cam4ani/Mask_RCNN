@@ -1854,7 +1854,7 @@ class MaskRCNN():
 
         # Inputs
         input_image = KL.Input(
-            shape=[None, None, config.IMAGE_SHAPE[2]], name="input_image")
+            shape=[None, None, config.IMAGE_SHAPE[2]], name="input_image") #TO BE CHNAGE FOR other channel nbr
         input_image_meta = KL.Input(shape=[config.IMAGE_META_SIZE],
                                     name="input_image_meta")
         if mode == "training":
@@ -2370,9 +2370,9 @@ class MaskRCNN():
             callbacks=callbacks,
             validation_data=val_generator,
             validation_steps=self.config.VALIDATION_STEPS,
-            max_queue_size=100,
-            workers=workers,
-            use_multiprocessing=True,
+            max_queue_size=20, #was 100 but due to issue 722 set it to 20
+            workers=workers, #max(self.config.BATCH_SIZE // 2, 2) #issue 13
+            use_multiprocessing=False, #for now 
         )
         self.epoch = max(self.epoch, epochs)
 
